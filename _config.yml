@@ -1,14 +1,13 @@
 # Site settings
 title: workmanship
 description: |
-  Another fine responsive
-  site template freebie
+  Jekyll Thema 와 Github Pages를 이용해 구축한 website
   crafted by [HTML5 UP](http://html5up.net)
 owner: Juminhark # or company name
 first_published: 2019 # if migrating another site, the year of your first publish
 email: wnalsgkr@gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "https://juminhark.github.io" # the base hostname & protocol for your site
 social:
   instagram: https://www.instagram.com/minharkju/
   github: https://github.com/Juminhark
