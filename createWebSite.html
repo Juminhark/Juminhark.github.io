@@ -6,24 +6,66 @@ subtitle : Jekyll 과 Github Page 를 이용한 빠른 WebSite 구축
 	<h3>1. repository 생성</h3>
 	<p>Github.com 과 local(자신의 컴퓨터)에 repository를 생성</p>
 	<div class="box alt">
-			<div class="row uniform 50%">
-				<div class="12u"><span class="image fit"><img src="images/website02.png" alt="" /></span></div>
-			</div>
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website02.png" alt="" /></span></div>
 		</div>
-	<p>github에 repository생성시 repository name은 <userName>.github.io로 생성</p>
-	<p>github desctop을 이용해 githyb의 repository를 local(자신의 컴퓨터 내부)로 clone</p>
+	</div>
+	<p>github에 repository생성시 repository name은 'userName.github.io'로 생성</p>
+	
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website03.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p><a href="https://desktop.github.com/">github desktop</a>을 이용해 github의 repository를 local(자신의 컴퓨터 내부)로 clone</p>
 	<hr />
 
-	<h3>2. Ruby + devkit 설치</h3>
-	<p><a href="https://rubyinstaller.org/downloads/">https://rubyinstaller.org/downloads/</a>.
-	<pre>
-	<code>> ruby -v
+	<h3>2. Jekyll Themes 적용</h3>
+	<p><a href="http://jekyllthemes.org/">http://jekyllthemes.org</a></p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website04.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p>원하는 theme를 선택하여 download하여 local repository에 저장한다</p>
+	
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website05.png" alt="" /></span></div>
+		</div>
+	</div>
+
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website06.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p></p>
+	<hr />
+
+
+	<h3>3. Ruby + devkit 설치</h3>
+	<p><a href="https://pages.github.com/versions/">https://pages.github.com/versions</a></p>	
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website07.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p>GitHub Pages가 사용하는 ruby version을 확인하고 해당 버젼을 설치한다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/website08.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p><a href="https://rubyinstaller.org/downloads/">https://rubyinstaller.org/downloads</a>에서 download하여 설치</p>
+	
+	<pre><code>> ruby -v
 ruby 2.5.5p157 (2019-03-15 revision 67260) [x64-mingw32]
-			
+						
 > gem -v
-2.7.6.2
-			
-> cd <local repository>
+2.7.6.2</code></pre>
+	<p>ruby + devkit 을 설치하고 window > cmd 을 열어 ruby와 gem이 설치 되었는지 확인한다</p>
+	<pre><code>> cd [local repository]
 			
 [local repository] > gem install jekyll
 25 gems installed
@@ -31,35 +73,15 @@ ruby 2.5.5p157 (2019-03-15 revision 67260) [x64-mingw32]
 [local repository] > jekyll serve
 Auto-regeneration: enabled for '[local repository]'
 Server address: http://127.0.0.1:4000/
-Server running... press ctrl-c to stop.</code></pre></p>
-
+Server running... press ctrl-c to stop.</code></pre>
+	<p>gem을 통해 jekyll을 local repository에 설치하고 jekyll server를 구동 </p>
 	<div class="box alt">
 		<div class="row uniform 50%">
 			<div class="12u"><span class="image fit"><img src="images/website01.png" alt="" /></span></div>
 		</div>
 	</div>
-	<hr />
+	<p>address를 통해 로컬상에서 브라우저로 접속하여 사이트가 어떻게 생성될지 미리 살펴볼 수 있다</p>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<p>Morbi mattis mi consectetur tortor elementum, varius pellentesque velit convallis. Aenean tincidunt lectus auctor mauris maximus, ac scelerisque ipsum tempor. Duis vulputate ex et ex tincidunt, quis lacinia velit aliquet. Duis non efficitur nisi, id malesuada justo. Maecenas sagittis felis ac sagittis semper. Curabitur purus leo, tempus sed finibus eget, fringilla quis risus. Maecenas et lorem quis sem varius sagittis et a est. Maecenas iaculis iaculis sem. Donec vel dolor at arcu tincidunt bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ut aliquet justo. Donec id neque ipsum. Integer eget ultricies odio. Nam vel ex a orci fringilla tincidunt. Aliquam eleifend ligula non velit accumsan cursus. Etiam ut gravida sapien.</p>
-	<p>Vestibulum ultrices risus velit, sit amet blandit massa auctor sit amet. Sed eu lectus sem. Phasellus in odio at ipsum porttitor mollis id vel diam. Praesent sit amet posuere risus, eu faucibus lectus. Vivamus ex ligula, tempus pulvinar ipsum in, auctor porta quam. Proin nec dui cursus, posuere dui eget interdum. Fusce lectus magna, sagittis at facilisis vitae, pellentesque at etiam. Quisque posuere leo quis sem commodo, vel scelerisque nisi scelerisque. Suspendisse id quam vel tortor tincidunt suscipit. Nullam auctor orci eu dolor consectetur, interdum ullamcorper ante tincidunt. Mauris felis nec felis elementum varius.</p>
-	<hr />
-	<h4>Feugiat aliquam</h4>
-	<p>Nam sapien ante, varius in pulvinar vitae, rhoncus id massa. Donec varius ex in mauris ornare, eget euismod urna egestas. Etiam lacinia tempor ipsum, sodales porttitor justo. Aliquam dolor quam, semper in tortor eu, volutpat efficitur quam. Fusce nec fermentum nisl. Aenean erat diam, tempus aliquet erat.</p>
-	<p>Etiam iaculis nulla ipsum, et pharetra libero rhoncus ut. Phasellus rutrum cursus velit, eget condimentum nunc blandit vel. In at pulvinar lectus. Morbi diam ante, vulputate et imperdiet eget, fermentum non dolor. Ut eleifend sagittis tincidunt. Sed viverra commodo mi, ac rhoncus justo. Duis neque ligula, elementum ut enim vel, posuere finibus justo. Vivamus facilisis maximus nibh quis pulvinar. Quisque hendrerit in ipsum id tellus facilisis fermentum. Proin mauris dui, at vestibulum sit amet, auctor bibendum neque.</p>
