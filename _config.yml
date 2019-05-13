@@ -1,8 +1,7 @@
 # Site settings
 title: workmanship
 description: |
-  Jekyll Thema 와 Github Pages를 이용해 구축한 website
-  crafted by [HTML5 UP](http://html5up.net)
+  [Jekyll Thema](http://jekyllthemes.org/) 와 [Github](https://github.com/) Pages를 이용해 구축한 website
 owner: Juminhark # or company name
 first_published: 2019 # if migrating another site, the year of your first publish
 email: wnalsgkr@gmail.com
