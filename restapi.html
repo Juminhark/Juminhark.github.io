@@ -3,10 +3,299 @@ layout: page
 title: Rest Api Tutorial
 subtitle : Build A Restful Api With Node.js Express & MongoDB
 ---
-	<h3>kotlin</h3>
-	<p>Morbi mattis mi consectetur tortor elementum, varius pellentesque velit convallis. Aenean tincidunt lectus auctor mauris maximus, ac scelerisque ipsum tempor. Duis vulputate ex et ex tincidunt, quis lacinia velit aliquet. Duis non efficitur nisi, id malesuada justo. Maecenas sagittis felis ac sagittis semper. Curabitur purus leo, tempus sed finibus eget, fringilla quis risus. Maecenas et lorem quis sem varius sagittis et a est. Maecenas iaculis iaculis sem. Donec vel dolor at arcu tincidunt bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ut aliquet justo. Donec id neque ipsum. Integer eget ultricies odio. Nam vel ex a orci fringilla tincidunt. Aliquam eleifend ligula non velit accumsan cursus. Etiam ut gravida sapien.</p>
-	<p>Vestibulum ultrices risus velit, sit amet blandit massa auctor sit amet. Sed eu lectus sem. Phasellus in odio at ipsum porttitor mollis id vel diam. Praesent sit amet posuere risus, eu faucibus lectus. Vivamus ex ligula, tempus pulvinar ipsum in, auctor porta quam. Proin nec dui cursus, posuere dui eget interdum. Fusce lectus magna, sagittis at facilisis vitae, pellentesque at etiam. Quisque posuere leo quis sem commodo, vel scelerisque nisi scelerisque. Suspendisse id quam vel tortor tincidunt suscipit. Nullam auctor orci eu dolor consectetur, interdum ullamcorper ante tincidunt. Mauris felis nec felis elementum varius.</p>
-	<hr />
-	<h4>Feugiat aliquam</h4>
-	<p>Nam sapien ante, varius in pulvinar vitae, rhoncus id massa. Donec varius ex in mauris ornare, eget euismod urna egestas. Etiam lacinia tempor ipsum, sodales porttitor justo. Aliquam dolor quam, semper in tortor eu, volutpat efficitur quam. Fusce nec fermentum nisl. Aenean erat diam, tempus aliquet erat.</p>
-	<p>Etiam iaculis nulla ipsum, et pharetra libero rhoncus ut. Phasellus rutrum cursus velit, eget condimentum nunc blandit vel. In at pulvinar lectus. Morbi diam ante, vulputate et imperdiet eget, fermentum non dolor. Ut eleifend sagittis tincidunt. Sed viverra commodo mi, ac rhoncus justo. Duis neque ligula, elementum ut enim vel, posuere finibus justo. Vivamus facilisis maximus nibh quis pulvinar. Quisque hendrerit in ipsum id tellus facilisis fermentum. Proin mauris dui, at vestibulum sit amet, auctor bibendum neque.</p>
+	<h3>Node.js 설치</h3>
+	<p>https://nodejs.org/ko/ 에서 설치</p>
+
+	
+
+	<p>
+			Node.js-Express-MongoDB
+
+			파일을 생성하고 해당 파일에 npm 환경설정
+			
+			>> cd rest-tutorial
+			>> npm init
+			-> package.json 생성됨
+			
+			express 설치
+			>> npm express nodemon
+			-> package.json dependencies에 추가됨
+			
+			ROUTES 개념 이해
+			
+			middleware 개념 이해
+			// Middlewares
+			app.use('/posts',() =>{
+				console.log('This is a middleware running')
+			});
+			
+			mongoDB 설치
+			>> npm install mongoose
+			
+			mongoDB Atlas : mlab흡수됨
+			db 생성하고 connect 에서 uri를 가져온다
+			
+			>> npm install dotenv
+			
+			const mongoose = require('mongoose'); 
+			추가
+			
+			// Connect To DB
+			mongoose.connect(
+				'mongodb+srv://wnalsgkr:wnalsgkr1q2w3#@rest-ljfri.mongodb.net/test?retryWrites=true',
+				{ useNewUrlParser: true }, 
+				 () =>console.log("connect to DB!")
+			); 추가
+			
+			위에보면 MongoDB 접근경로가 노출되기 때문에 감출필요가 있다
+			
+			dotenv가 package.json dependencies에 추가되어있는지 확인하고
+			
+			.env 파일을 만들어서
+			DB_CONNECTION=<DB 경로>
+			를 추가한다
+			
+			app.js에 
+			
+			require('dotenv/config');
+			추가 하면 process로 env에 접근가능하다
+			
+			mongoose.connect(
+				process.env.DB_CONNECTION,
+				{ useNewUrlParser: true }, 
+				() => console.log("connect to DB!")
+			);
+			으로 바꾸어 주고 git.ignore에 .env를 추가하여 db접근 경로를 감추어준다
+			
+			
+			app.get('/posts',(req,res) => {
+				res.send('We are on posts');
+			});
+			'/' request 에대한 response가 길어지게 되면 여러 request경로에대한 response로 app.js가 길어지니 
+			route를 파일로 따로 모아주고 해당경로를 찾아와 사용하도록 하면 코드가 간결해진다
+			
+			route들을 모아놓은 파일 routes를 만들고 /posts request를 담당할
+			posts.js 생성
+			
+			posts.js --
+			const express = require('express');
+			
+			const router = express.Router();
+			
+			router.get('/',(req,res) => {
+				res.send('We are on posts');
+			});
+			
+			module.exports = router;
+			추가하고
+			
+			app.js --
+			const postsRoute = require('./routes/posts');
+			
+			app.use('/posts', postsRoute);
+			를 추가하면 /posts request는 postsrRoute를 반환하고 postRoute는 ./routes/posts 를 실행한다
+			
+			--------------------------------------------------------------------------------------------------------------------------
+			DB사용하기
+			models 파일 생성 후 Post.js 생성
+			
+			Post.js --
+			const mongoose = require('mongoose');
+			
+			const PostSchema = mongoose.Schema({
+				title: {
+					type: String,
+					required: true
+				},
+				desciption:  {
+					type: String,
+					required: true
+				},
+				date:  {
+					type: Date,
+					default: Date.now
+				}
+			});
+			
+			module.exports = mongoose.model('Posts', PostSchema);
+			-- 추가
+			
+			posts.js 에서 위 model 사용할수 있도록
+			posts.js --
+			const Post = require('../models/Post');
+			
+			router.post('/', (req,res) => {
+				console.log(req.body);
+			});
+			-- 추가
+			
+			postman 설치
+			https://www.getpostman.com/downloads/
+			
+			postman이 client 라고 생각하고 서버쪽으로 데이터를 넘길수 있도록
+			post // localhost:3000/posts
+			body / raw / json(application/json) / 넘길정보
+			
+			넘길정보 --
+			{
+				
+				"title" : "my first post",
+				
+				"desciption" :  "This is my desciption of my love",
+			
+			}
+			-- 을 보내도록한다
+			
+			이때 오류가 나는데 posts.js에서 
+			router.post('/', (req,res) => {
+				console.log(req.body);
+			});
+			에서 body에서 해당 내용을 표현하지 못하기 때문에 오류가 난다
+			
+			>> npm install body-parser
+			
+			app.js에 body-parser 추가
+			app.js --
+			const bodyParser = require('body-parser');
+			
+			// Middlewares
+			app.use(bodyParser.json());
+			-- 추가하고 postman으로 정보를 보내면 body에 사용할수있는것을 확인할수있다
+			
+			---------------------------------------------------------------------------------------------------------
+			DB 저장하기
+			postman이 post방식으로 /posts request에 정보를 보내오면
+			
+			app.js가 request를 받아와 
+			const postsRoute = require('./routes/posts');
+			app.use('/posts', postsRoute); 
+			를 통해 posts.js로 post방식 request를 넘기고
+			
+			posts.js에서는 받아온 post방식의 정보를
+			posts.js -- 
+			router.post('/', (req,res) => {
+				const post = new Post({
+					title: req.body.title,
+					desciption: req.body.desciption
+				});
+			
+				post.save()
+					.then(data => {
+						res.json(data);
+					})
+					.catch(err => {
+						res.json({message: err});
+					});
+			});
+			-- 를 통해 새로운 post를 만들어 .save()를 통해 json형태로 db로 넘겨 저장한다
+			
+			mongodb atlas 의 해당 db의 cellection을 열람하면 저장된 정보를 볼수 있다.
+			-----------------------------------------------------------------------------------------
+			post 방식 처리과정 코드 간결화 ( 간결화가 맞나 모르겠네 )
+			
+			posts.js-- 의 post 처리과정을
+			
+			router.post('/', async (req,res) => {
+				const post = new Post({
+					title: req.body.title,
+					desciption: req.body.desciption
+				});
+			
+				try{
+				const savedPost = await post.save();
+				res.json(savedPost);
+				}catch(err){
+					res.json({messge:err});
+				}
+			});
+			-- 위 처럼 바꾼다.
+			------------------------------------------------------------------------------------------
+			db정보 가져오기
+			
+			/posts 에 get방식으로 request를 보내면 db정보를 찾아 보여주도록
+			
+			posts.js --
+			router.get('/',async (req,res) => {
+				try{
+					const posts = await Post.find();
+					res.json(posts);
+				}catch(err){
+					res.json({message:err});
+				}
+			});
+			-- 으로 get방식에 .find 메서드(mongoose의 메서드이다)로 가져온다
+			
+			--------------------------------------------------------------------------------------------
+			get 방식의 uri 사용방법
+			
+			posts.js -- 
+			router.get('/:postId', (req,res) =>{
+				console.log(req.params.postId);
+			});
+			-- 
+			
+			post/ request로 posts.js로 와서 post/<uri>  ** 쿼리스트링으로 보낼때**
+			
+			뒤의 쿼리 스트링을 :postId 로 받아오고 있다 
+			
+			 : 가 붙으면 <uri>를 postId = <uri> 로 저장한다
+			
+			------------------------------------------------------------------------------------------
+			위의 uri 사용방식을 이용 특정 post 가져오기
+			
+			posts.js --
+			router.get('/:postId',async (req,res) =>{
+				try{
+					const post = await Post.findById(req.params.postId);
+					res.json(post);
+				}catch(err){
+					res.json({message:err});
+				}
+			}); -- 추가
+			:postId 로 posts/<uri> 의 uri를 postId로 저장하고
+			Post.findById(req.params.postId) 를 통해 저장한 postId로 특정 id를 통해 검색하여
+			post 를 찾아 post에 저장하여 response json으로 보내준다 
+			
+			---------------------------------------------------------------------------------------------
+			특정 post delete하기
+			
+			특정 post 가져오는 방식과 유사하다
+			
+			posts.js -- 
+			router.delete('/:postId',async (req,res) =>{
+				try{
+					const removedPost = await Post.remove({_id: req.params.postId});
+					res.json(removedPost);
+				}catch(err){
+					res.json({message:err});
+				}
+			}); -- 추가
+			
+			postman delete 방식으로 posts/<uri> 을 보내면 
+			postId로 저장하고 _id : req.params.postId 로 _id 로 찾은 post를 .remove 메소드로 삭제한다
+			
+			---------------------------------------------------------------------------------------------
+			특정 post의  특정 항목 업데이트
+			
+			posts.js --
+			router.patch('/:postId',async (req,res) =>{
+				try{
+					const updatePost = await Post.updateOne(
+						{_id: req.params.postId}, 
+						{ $set: {title: req.body.title}}
+					);
+			
+					res.json(updatePost);
+				}catch(err){
+					res.json({message:err});
+				}
+			}); -- 추가
+			
+			postman patch 방식으로 posts/<uri> 에 
+			{
+				
+				"title": "We are learning about backend stuff"
+			
+			}
+			을 보내면 uri로 특정 post를 찾고 title을 보내온것으로 업데이트 한다
+	</p>
