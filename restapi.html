@@ -3,299 +3,550 @@ layout: page
 title: Rest Api Tutorial
 subtitle : Build A Restful Api With Node.js Express & MongoDB
 ---
-	<h3>Node.js 설치</h3>
-	<p>https://nodejs.org/ko/ 에서 설치</p>
+	<p>source code editor : <a href="https://code.visualstudio.com/">Visual Studio Code</a></p>  
+	<p>platform : <a href="https://nodejs.org/ko/">Node.js</a></p>    
+	<p>framework : <a href="https://expressjs.com/ko/">Express</a></p>  
+	<p>DB : <a href="https://www.mongodb.com/">MongoDB</a></p>  
+	<p>module : <a href="https://nodemon.io/">nodemon</a>, <a href="https://mongoosejs.com/">mongoose</a>, <a href="https://www.npmjs.com/package/dotenv">dotenv</a></p> 
+	<p>test tool : <a href="https://www.getpostman.com">postman</a></p>
+	<hr/>
 
+	<h3>Restful Api</h3>
+	<p>REST(Representational state transfer)는 World Wide Web과 같은 분산 하이퍼미디어 시스템을 위한 소프트웨어 아키텍처의 한 형식이다.</p>
+	<p>엄격한 의미로 REST는 네트워크 아키텍처 원리의 모음이다. 여기서 '네트워크 아키텍처 원리'란 자원을 정의하고 자원에 대한 주소를 지정하는 방법 전반을 일컫는다.</p>
+	<p>간단한 의미로는, 웹 상의 자료를 HTTP위에서 SOAP이나 쿠키를 통한 세션 트랙킹 같은 별도의 전송 계층 없이 전송하기 위한 아주 간단한 인터페이스를 말한다.</p>
+	<P>REST 아키텍처 형식을 따르면 HTTP나 WWW이 아닌 아주 커다란 소프트웨어 시스템을 설계하는 것도 가능하다. 또한, 리모트 프로시저 콜 대신에 간단한 XML과 HTTP 인터페이스를 이용해 설계하는 것도 가능하다.</P>
+	<p>필딩의 REST 원리를 따르는 시스템은 종종 'RESTful'이란 용어로 지칭된다</p>
+
+	<div class="6u 12u$(medium)">
+		<h4>REST 인터페이스의 원칙에 대한 가이드</h4>
+		<ul>
+			<li>자원의 식별</li>
+			<li>메세지를 통한 리소스의 조작</li>
+			<li>자기서술적 메세지</li>
+			<li>애플리케이션의 상태에 대한 엔진으로서 하이퍼 미디어</li>
+		</ul>
+	</div>
 	
+	<p>즉, HTTP 프로토콜을 의도에 맞게 정확히 활용하여 디자인하도록 유도하고 있기 때문에 디자인 기준이 명확해지며, 의미적인 범용성을 지니므로 중간 계층의 컴포넌트들이 서비스를 최적화하는 데 도움이 된다.</p>
+	<div class="6u 12u$(medium)">
+		<h4>REST에서 가장 중요하며 기본적인 규칙은 아래 두 가지이다.</h4>
+		<ul>
+			<li>URI는 정보의 자원을 표현해야 한다.</li>
+			<li>자원에 대한 행위는 HTTP Method로 표현한다.</li>
+		</ul>
+	</div>
+	
+	<h4>HTTP Method 사용의 예는 아래와 같다.</h4>		
+	<div class="table-wrapper">
+		<table class="alt">
+			<thead>
+				<tr>
+					<th>Verb</th>
+					<th>Action</th>
+					<th>Path</th>
+					<th>User for</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>GET</td>
+					<td>index</td>
+					<td>/books</td>
+					<td>모든 서적 리스트 조회</td>
+				</tr>
+				<tr>
+					<td>GET</td>
+					<td>retrieve</td>
+					<td>/books/:id</td>
+					<td>특정 서적 조회</td>
+				</tr>
+				<tr>
+					<td>POST</td>
+					<td>create</td>
+					<td>/books</td>
+					<td>신규 서적 생성</td>
+				</tr>
+				<tr>
+					<td>PUT</td>
+					<td>replace</td>
+					<td>/books/:id</td>
+					<td>특정 서적 갱신(없으면 생성)</td>
+				</tr>
+				<tr>
+					<td>PATCH</td>
+					<td>update</td>
+					<td>/books/:id</td>
+					<td>특정 서적 갱신</td>
+				</tr>
+				<tr>
+					<td>DELETE</td>
+					<td>delete</td>
+					<td>/books</td>
+					<td>모든 서적 삭제</td>
+				</tr>
+				<tr>
+					<td>DELETE</td>
+					<td>delete</td>
+					<td>/books/:id</td>
+					<td>특정 서적 삭제</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<hr/>
 
-	<p>
-			Node.js-Express-MongoDB
+	<h3>npm 초기화</h3>
+	<p>VSC(Visual Studio Code)실행후 local repository에 npm 초기화를 한다</p>
 
-			파일을 생성하고 해당 파일에 npm 환경설정
-			
-			>> cd rest-tutorial
-			>> npm init
-			-> package.json 생성됨
-			
-			express 설치
-			>> npm express nodemon
-			-> package.json dependencies에 추가됨
-			
-			ROUTES 개념 이해
-			
-			middleware 개념 이해
-			// Middlewares
-			app.use('/posts',() =>{
-				console.log('This is a middleware running')
-			});
-			
-			mongoDB 설치
-			>> npm install mongoose
-			
-			mongoDB Atlas : mlab흡수됨
-			db 생성하고 connect 에서 uri를 가져온다
-			
-			>> npm install dotenv
-			
-			const mongoose = require('mongoose'); 
-			추가
-			
-			// Connect To DB
-			mongoose.connect(
-				'mongodb+srv://wnalsgkr:wnalsgkr1q2w3#@rest-ljfri.mongodb.net/test?retryWrites=true',
-				{ useNewUrlParser: true }, 
-				 () =>console.log("connect to DB!")
-			); 추가
-			
-			위에보면 MongoDB 접근경로가 노출되기 때문에 감출필요가 있다
-			
-			dotenv가 package.json dependencies에 추가되어있는지 확인하고
-			
-			.env 파일을 만들어서
-			DB_CONNECTION=<DB 경로>
-			를 추가한다
-			
-			app.js에 
-			
-			require('dotenv/config');
-			추가 하면 process로 env에 접근가능하다
-			
-			mongoose.connect(
-				process.env.DB_CONNECTION,
-				{ useNewUrlParser: true }, 
-				() => console.log("connect to DB!")
-			);
-			으로 바꾸어 주고 git.ignore에 .env를 추가하여 db접근 경로를 감추어준다
-			
-			
-			app.get('/posts',(req,res) => {
-				res.send('We are on posts');
-			});
-			'/' request 에대한 response가 길어지게 되면 여러 request경로에대한 response로 app.js가 길어지니 
-			route를 파일로 따로 모아주고 해당경로를 찾아와 사용하도록 하면 코드가 간결해진다
-			
-			route들을 모아놓은 파일 routes를 만들고 /posts request를 담당할
-			posts.js 생성
-			
-			posts.js --
-			const express = require('express');
-			
-			const router = express.Router();
-			
-			router.get('/',(req,res) => {
-				res.send('We are on posts');
-			});
-			
-			module.exports = router;
-			추가하고
-			
-			app.js --
-			const postsRoute = require('./routes/posts');
-			
-			app.use('/posts', postsRoute);
-			를 추가하면 /posts request는 postsrRoute를 반환하고 postRoute는 ./routes/posts 를 실행한다
-			
-			--------------------------------------------------------------------------------------------------------------------------
-			DB사용하기
-			models 파일 생성 후 Post.js 생성
-			
-			Post.js --
-			const mongoose = require('mongoose');
-			
-			const PostSchema = mongoose.Schema({
-				title: {
-					type: String,
-					required: true
-				},
-				desciption:  {
-					type: String,
-					required: true
-				},
-				date:  {
-					type: Date,
-					default: Date.now
-				}
-			});
-			
-			module.exports = mongoose.model('Posts', PostSchema);
-			-- 추가
-			
-			posts.js 에서 위 model 사용할수 있도록
-			posts.js --
-			const Post = require('../models/Post');
-			
-			router.post('/', (req,res) => {
-				console.log(req.body);
-			});
-			-- 추가
-			
-			postman 설치
-			https://www.getpostman.com/downloads/
-			
-			postman이 client 라고 생각하고 서버쪽으로 데이터를 넘길수 있도록
-			post // localhost:3000/posts
-			body / raw / json(application/json) / 넘길정보
-			
-			넘길정보 --
-			{
-				
-				"title" : "my first post",
-				
-				"desciption" :  "This is my desciption of my love",
-			
-			}
-			-- 을 보내도록한다
-			
-			이때 오류가 나는데 posts.js에서 
-			router.post('/', (req,res) => {
-				console.log(req.body);
-			});
-			에서 body에서 해당 내용을 표현하지 못하기 때문에 오류가 난다
-			
-			>> npm install body-parser
-			
-			app.js에 body-parser 추가
-			app.js --
-			const bodyParser = require('body-parser');
-			
-			// Middlewares
-			app.use(bodyParser.json());
-			-- 추가하고 postman으로 정보를 보내면 body에 사용할수있는것을 확인할수있다
-			
-			---------------------------------------------------------------------------------------------------------
-			DB 저장하기
-			postman이 post방식으로 /posts request에 정보를 보내오면
-			
-			app.js가 request를 받아와 
-			const postsRoute = require('./routes/posts');
-			app.use('/posts', postsRoute); 
-			를 통해 posts.js로 post방식 request를 넘기고
-			
-			posts.js에서는 받아온 post방식의 정보를
-			posts.js -- 
-			router.post('/', (req,res) => {
-				const post = new Post({
-					title: req.body.title,
-					desciption: req.body.desciption
-				});
-			
-				post.save()
-					.then(data => {
-						res.json(data);
-					})
-					.catch(err => {
-						res.json({message: err});
-					});
-			});
-			-- 를 통해 새로운 post를 만들어 .save()를 통해 json형태로 db로 넘겨 저장한다
-			
-			mongodb atlas 의 해당 db의 cellection을 열람하면 저장된 정보를 볼수 있다.
-			-----------------------------------------------------------------------------------------
-			post 방식 처리과정 코드 간결화 ( 간결화가 맞나 모르겠네 )
-			
-			posts.js-- 의 post 처리과정을
-			
-			router.post('/', async (req,res) => {
-				const post = new Post({
-					title: req.body.title,
-					desciption: req.body.desciption
-				});
-			
-				try{
-				const savedPost = await post.save();
-				res.json(savedPost);
-				}catch(err){
-					res.json({messge:err});
-				}
-			});
-			-- 위 처럼 바꾼다.
-			------------------------------------------------------------------------------------------
-			db정보 가져오기
-			
-			/posts 에 get방식으로 request를 보내면 db정보를 찾아 보여주도록
-			
-			posts.js --
-			router.get('/',async (req,res) => {
-				try{
-					const posts = await Post.find();
-					res.json(posts);
-				}catch(err){
-					res.json({message:err});
-				}
-			});
-			-- 으로 get방식에 .find 메서드(mongoose의 메서드이다)로 가져온다
-			
-			--------------------------------------------------------------------------------------------
-			get 방식의 uri 사용방법
-			
-			posts.js -- 
-			router.get('/:postId', (req,res) =>{
-				console.log(req.params.postId);
-			});
-			-- 
-			
-			post/ request로 posts.js로 와서 post/<uri>  ** 쿼리스트링으로 보낼때**
-			
-			뒤의 쿼리 스트링을 :postId 로 받아오고 있다 
-			
-			 : 가 붙으면 <uri>를 postId = <uri> 로 저장한다
-			
-			------------------------------------------------------------------------------------------
-			위의 uri 사용방식을 이용 특정 post 가져오기
-			
-			posts.js --
-			router.get('/:postId',async (req,res) =>{
-				try{
-					const post = await Post.findById(req.params.postId);
-					res.json(post);
-				}catch(err){
-					res.json({message:err});
-				}
-			}); -- 추가
-			:postId 로 posts/<uri> 의 uri를 postId로 저장하고
-			Post.findById(req.params.postId) 를 통해 저장한 postId로 특정 id를 통해 검색하여
-			post 를 찾아 post에 저장하여 response json으로 보내준다 
-			
-			---------------------------------------------------------------------------------------------
-			특정 post delete하기
-			
-			특정 post 가져오는 방식과 유사하다
-			
-			posts.js -- 
-			router.delete('/:postId',async (req,res) =>{
-				try{
-					const removedPost = await Post.remove({_id: req.params.postId});
-					res.json(removedPost);
-				}catch(err){
-					res.json({message:err});
-				}
-			}); -- 추가
-			
-			postman delete 방식으로 posts/<uri> 을 보내면 
-			postId로 저장하고 _id : req.params.postId 로 _id 로 찾은 post를 .remove 메소드로 삭제한다
-			
-			---------------------------------------------------------------------------------------------
-			특정 post의  특정 항목 업데이트
-			
-			posts.js --
-			router.patch('/:postId',async (req,res) =>{
-				try{
-					const updatePost = await Post.updateOne(
-						{_id: req.params.postId}, 
-						{ $set: {title: req.body.title}}
-					);
-			
-					res.json(updatePost);
-				}catch(err){
-					res.json({message:err});
-				}
-			}); -- 추가
-			
-			postman patch 방식으로 posts/<uri> 에 
-			{
-				
-				"title": "We are learning about backend stuff"
-			
-			}
-			을 보내면 uri로 특정 post를 찾고 title을 보내온것으로 업데이트 한다
-	</p>
+	<pre>
+<code>>cd [local repository]
+
+> npm init</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs02.png" alt="" /></span></div>
+		</div>
+	</div>
+	
+	<p>초기화시 따로 값을 주지않으면 default값으로 pakage.json을 생성한다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs03.png" alt="" /></span></div>
+		</div>
+	</div>
+	<hr/>
+
+	<h3>Express, nodemon설치</h3>
+	<p>Express는  웹 및 모바일 애플리케이션을 위한 일련의 강력한 기능을 제공하는 간결하고 유연한 Node.js 웹 애플리케이션 프레임워크이다.</p>
+	<p>nodemon은 프로젝트 폴더의 파일들을 모니터링하고 있다가 파일이 수정될 경우 자동으로 서버를 리스타트 시켜주는 도구이다</p>
+	<pre>
+<code>>npm install express nodemon</code>
+	</pre>
+	<p>설치가 완료되면 package.json dependencies에 추가되었음을 알수있다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs04.png" alt="" /></span></div>
+		</div>
+	</div>
+	<hr/>
+
+	<h3>app.js 생성</h3>
+
+	<p>app.js파일을 생성하고 아래와 같이 Express를 추가. Express는 자유롭게 활용할수 잇는 수많은 http 유틸리티 메소드 및 미들웨어를 통해 쉽고 빠르게 강력한 API를 작성할수 있다.</p>
+	<pre>
+<code>const express = require('express');
+const app = express();
+		
+//ROUTES
+app.get('/', (req, res) => {
+	res.send('we are on home')
+});
+		
+//How to we start listening to the server
+app.listen(3000);</code>
+	</pre>
+
+<p> .get() 메소드를 통해 uri를 통한 request에대한 response를 대응할수 있고, .listen() 메소드를 통해 서버를 연결할수있다.</p>
+	
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs05.png" alt="" /></span></div>
+		</div>
+	</div>
+
+	<p>pakage.json에 start nodemon app.js를 추가</p>
+	<pre>
+<code>"scripts": {
+	"start": "nodemon app.js"
+}</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs07.png" alt="" /></span></div>
+		</div>
+	</div>	
+	<hr/>
+	
+	<h3>server 실행</h3>
+	<p>npm은 pakage.json을 실행하고 안에있는 scripts - start : nodemon app.js 으로 nodemon을 통해 app.js을 실행하게된다. </p>
+	<p>nodemon은 app.js을 모니터링하며 파일이 수정될때마다 서버를 restart한다</p>
+
+	<pre>
+<code>>npm start</code>
+	</pre>
+	<p>server address를 통해 위에 생성된 app이 실행되는지 확인할수있다.</p>
+
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs06.png" alt="" /></span></div>
+		</div>
+	</div>
+	<hr/>
+
+	<h3>Route 추가</h3>
+	<p>route를 추가함으로 app은 여러 uri에 따라 대응할수 있게된다. app.js에 다음을 추가하면</p>
+	<pre>
+<code>app.get('/posts', (req, res) => {
+	res.send('we are on posts!!')
+});</code>
+	</pre>
+	<p>app.get() 메소드는 /posts 의 uri를 통해 들어오는 request에 response를 만들어 응답할수있다.</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs08.png" alt="" /></span></div>
+		</div>
+	</div>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs09.png" alt="" /></span></div>
+		</div>
+	</div>
+	<hr/>
+
+	<h3>Middlewares 사용</h3>
+	<p> .use()를 통해 특정 uri에 동작하는 Middleware를 만들수 있다. 아래 코드를 app.js에 추가해주고</p>
+	<pre>
+<code>app.use('/posts', () => {
+	console.log('This is a Middleware running!');
+});</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs10.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p>해당 uri에 request를 보내면 Middleware가 동작함을 알수있다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs11.png" alt="" /></span></div>
+		</div>
+	</div>
+
+	<p>현재의 Middleware 함수를 위와 같은 사용할때에는 요청 - 응답 주기가 종료되지 않는다.</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs12.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p> 이경우 next()를 호출하여 그 다음 미들웨어 함수에 제어를 전달해야 한다. 그렇지 않으면 해당 요청은 정지된 채로 방치된다.</p>
+	<pre>
+<code>app.use('/posts', (req, res, next) => {
+	console.log('This is a middleware running!');
+	next();
+});</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs13.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p>다시 uri로 request를 보내면 정상적으로 middleware가 작동하고</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs14.png" alt="" /></span></div>
+		</div>
+	</div>
+	<p>response도 방치되지않는다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs15.png" alt="" /></span></div>
+		</div>
+	</div>
+	<hr/>
+
+	<h3>mongoose 설치</h3>
+	<p>mongoose는 Node.js와 MongoDB를 위한 ODM(Object Data Mapping) library이다.</p>
+	<pre>
+<code>>npm install mongoose</code>
+	</pre>
+	<p>local repository에 mongoose를 설치하면 pakage.json dependencies에 추가된다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs16.png" alt="" /></span></div>
+		</div>
+	</div>
+	<hr/>
+	
+	<h3>mongoDB Atlas</h3>
+	<P><a href="https://cloud.mongodb.com">mongoDB Alas</a>에 접속하여 계정생성후 Build a Cluster을 선택</P>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB01.png" alt="" /></span></div>
+		</div>
+	</div>
+	
+	<div class="6u 12u$(medium)">
+		<h4>Build a new Cluter</h4>			
+		<ul>
+			<li>region : Singapore(free tier available)</li>
+			<li>Cluster Tier : M0 Sandbox</li>
+			<li>Cluster Name : [projectName]</li>
+		</ul>
+	</div>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB02.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>cluster을 생성완료 후 app과 연결을 위해 Cluster의 connect 을선택</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB03.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>cluster을 사용할 user를 생성</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB04.png" alt="" /></span></div>			
+		</div>
+	</div>
+	
+	<p>Connet Your Application을 선택하여 connection string을 얻는다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB05.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB06.png" alt="" /></span></div>			
+		</div>
+	</div>
+
+	<p>app.js에 mongoose를 통해 DB에서 얻은 Connection String으로 DB을 연결한다. </p>
+	
+	<pre>
+<code>const mongoose = require('mongoose');
+	
+//Connect To DB
+mongoose.connect(
+	'mongodb+srv://[userId]:[userpassword]@test-ljfri.mongodb.net/test?retryWrites=true',
+	{ useNewUrlParser: true },
+	() => {console.log('connected to DB!');}
+);</code>
+	</pre>
+	<p>이때 userid / userpassword 확인</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB07.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>다시 npm 을 start하면 DB가 연결되었음을 알수있다.</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/mongoDB08.png" alt="" /></span></div>			
+		</div>
+	</div>
+
+
+	<p>위와 같이 app.js에서 직접 DB접근경로를 노출하는경우 보안에 취약하다</p>
+	<p>이런경우 접근경로나 기타 환경변수를 따로 파일로 관리하며 app.js에서는 환경변수를 불러와 사용하도록하면 해결할수 있다</p>
+	<hr/>
+
+	<h3>dotenv 설치</h3>
+	<p>환경변수들을 .env 파일에서 로드하여 사용하기 위해 dotenv modlue을 설치</p>
+	<pre>
+<code>>npm install dotenv</code>		
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs17.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p> .env 파일 생성후 DB접근경로를 저장</p>
+	<pre>
+<code>DB_CONNECTION=mongodb+srv://admin:admin@test-ljfri.mongodb.net/test?retryWrites=true</code>		
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs18.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>app.js에서 dotenv를 이용해 .env파일을 사용할수 있도록한다</p>
+	<pre>
+<code>require('dotenv/config');
+
+//Connect To DB
+mongoose.connect(
+	process.env.DB_CONNECTION,
+	{ useNewUrlParser: true },
+	() => {console.log('connected to DB!');}
+);</code>		
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs19.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+
+	<h3>router 따로 관리하기</h3>
+	<p>route를 파일로 따로 모아주고 해당경로를 찾아와 사용하도록 하면 코드가 간결해진다 </p>
+	<p>routes > posts.js 생성</p>
+	<pre>
+<code>const express = require('express');
+
+const router = express.Router();
+		
+router.get('/',(req,res) => {
+	res.send('We are on posts');
+});
+		
+module.exports = router;</code>		
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs20.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>app.js에서는 posts route를 import하여 사용</p> 	
+	<pre>
+<code>//Import Routes
+const postsRoute = require('./routes/posts');
+		
+app.use('/posts', postsRoute);</code>		
+	</pre>
+	<p>'/posts' uri는 postsRoute가 대응하며 postsRoute는 posts.js를 실행</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs21.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>address를 통해 확인해보면 작동확인</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs22.png" alt="" /></span></div>			
+		</div>
+	</div>
+	
+	<p>posts.js에 '/specific' 대응하는 .get()메서드 추가</p> 	
+	<pre>
+<code>router.get('/specific',(req,res) => {
+	res.send('specific posts');
+});</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs23.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>http://localhost:3000/posts/specific</p>	
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs24.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+
+	<h3>정보 받기</h3>
+	<p>client가 보내온 정보를 처리하는 과정을 test하기위해 test tool인 postman이 보내온 json을 app이 처리할수 있도록 한다</p>
+	<p>app 안에서 사용할 model을 생성한다</p>
+	<p>models > Post.js 생성하고</p>
+	<pre>
+<code>const mongoose = require('mongoose');
+
+//schema : represent how that post look
+const PostSchema = mongoose.Schema({
+	title: {
+		type: String,
+		required: true
+	},
+	description:  {
+		type: String,
+		required: true
+	},
+	date:  {
+		type: Date,
+		default: Date.now
+	}
+});
+		
+module.exports = mongoose.model('Posts', PostSchema);</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs25.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>posts.js에서 model을사용할수 있도록 import한다</p>
+	<pre>
+<code>const Post = require('../models/Post');
+
+//client가 보내온 request
+router.post('/', (req,res) => {
+	console.log(req.body);
+});</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs26.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+
+	<h3>postman</h3>
+	<p><a href="https://www.getpostman.com">postman</a> : url로 다양한 request를 보내볼수 있고 그에따른 response도 확인할수 있어 쉽게 rest api을 테스트할수 있는 도구이다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman01.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>http://localhost:3000/posts에 GET형식으로 request를 보내면 다음과 같다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman02.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>Body > raw > JSON(application/json)으로 다음내용을 담아 post형식으로 보낸다</p>
+	<pre>
+<code>{
+	"title": "my first post"
+	"description" : "This is my descrition of my love life"
+}</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman03.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>아직 보내온 reqeust에 대한 response는 없지만 reqeust를 sever에서 받았다는것은 알수있다</p>	
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman04.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>posts.js > console.log(req.body);의 body에서 해당 내용을 표현하지 못하기 때문에 undifined가 출력된다. 이를 해결하기위해 body-parser를 설치한다</p>
+	<pre>
+<code>>npm install body-parser</code>
+	</pre>
+	<p>app.js에 body-parser를 import</p>
+	<pre>
+<code>//Body-Parser
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman05.png" alt="" /></span></div>			
+		</div>
+	</div>
+	
+	
+	
+	<hr/>
+
+
+	<h3>Reference</h3>
+	<div class="row">
+		<div class="6u$ 12u$(medium)">
+			<ol>
+				<li><a href="https://www.youtube.com/watch?v=vjf774RKrLc">Dev Ed</a></li>
+				<li><a href="https://ko.wikipedia.org/wiki/REST">rest - wiki</a></li>
+				<li><a href="https://poiemaweb.com/mongoose">poiemaweb</a></li>
+			</ol>
+		</div>
+	</div>
+	<hr />
+
