@@ -502,7 +502,7 @@ router.post('/', (req,res) => {
 	<p>Body > raw > JSON(application/json)으로 다음내용을 담아 post형식으로 보낸다</p>
 	<pre>
 <code>{
-	"title": "my first post"
+	"title": "my first post",
 	"description" : "This is my descrition of my love life"
 }</code>
 	</pre>
@@ -532,11 +532,207 @@ app.use(bodyParser.json());</code>
 			<div class="12u"><span class="image fit"><img src="images/postman05.png" alt="" /></span></div>			
 		</div>
 	</div>
-	
-	
-	
+	<p>다시 npm start 하고 post request를 보내보면 다음을 얻을수 있다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman06.png" alt="" /></span></div>			
+		</div>
+	</div>
 	<hr/>
 
+	<h3>DB에 저장하기</h3>
+	<p>postman이 '/posts'로 body에 json 정보를 담아 request를 보내면</p>
+	<p>app.js가 request를 받아</p>
+	<pre>
+<code>const postsRoute = require('./routes/posts');
+app.use('/posts', postsRoute); </code>
+	</pre>
+	<p>위 코드를 통해 posts.js로 post방식 request를 넘기고</p>
+	<p>post.js 에서는 받아온 post방식의 body를 model:post객체를 만들어 json을 담는다.</p>
+	<pre>
+<code>router.post('/', async (req,res) => {
+    const post = new Post({
+        title: req.body.title,
+        description: req.body.description
+    });
+
+    try{
+    const savedPost = await post.save();
+    res.json(savedPost);
+    }catch(err){
+        res.json({messge:err});
+    }
+});</code>
+	</pre>
+	<p>생성된 객체 post는 .save()메서드를 통해 json형태로 DB로 넘겨 저장한다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman07.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>postman으로 test해보면 request에 대한 response가 응답되고</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman08.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>DB에 접속해 보면 데이터가 저장이 된것을 확인할수 있다.</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman09.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+	<h3>get 방식의 uri 사용방법</h3>
+	<pre>
+<code>router.get('/:postId', (req,res) =>{
+	console.log(req.params.postId);
+});</code>
+	</pre>
+	<p>'/posts/:postId' 으로 들어온 쿼리 스트링을 :postId 로 받아오고 있다 </p>		
+	<p> : 가 붙은 postId에 쿼리스트링을 저장한다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman15.png" alt="" /></span></div>			
+		</div>
+	</div>	
+
+	<h3>DB 정보 가져오기</h3>
+	<p>posts.js에 다음을 코드를 추가</p>
+	<pre>
+<code>router.get('/',async (req,res) => {
+	try{
+		const posts = await Post.find();
+		res.json(posts);
+	}catch(err){
+		res.json({message:err});
+	}
+});</code>
+	</pre>
+	 <p>'/posts' uri에 get방식으로 request를 보내면 Post DB정보를 가져와 response로 응답한다</p>
+	 <div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman10.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>postman으로 test해보면 다음과 같다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman11.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+
+	<h3>특정 DB 정보 가져오기</h3>
+	<p>posts.js에 다음을 코드를 추가</p>
+	<pre>
+<code>router.get('/:postId',async (req,res) =>{
+    try{
+        const post = await Post.findById(req.params.postId);
+        res.json(post);
+    }catch(err){
+        res.json({message:err});
+    }
+});</code>
+	</pre>
+	<p> '/posts/:id' 쿼리스트링으로 들어온 id를 postId로 저장하고 
+	<p>Post.findById(req.params.postId) 를 통해 특정 id를 통해 검색하여</p>	
+	<p>post 를 찾아 post에 저장하여 response json으로 보내준다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman12.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>가지고 있는 post중 특정 post의 id를찾아</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman13.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>해당 id를 가지고 있는 특정 post를 response 응답해주는것을 알수있다.</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman14.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+
+	<h3>특정 post delete</h3>
+	<p>특정 post 가져오는 방식과 유사하다</p>
+	<pre>
+<code>router.delete('/:postId',async (req,res) =>{
+	try{
+		const removedPost = await Post.remove({_id: req.params.postId});
+		res.json(removedPost);
+	}catch(err){
+		res.json({message:err});
+	}
+});</code>
+	</pre>
+	<p>postman에서 delete 방식으로 posts/:postId 을 보내면 </p>
+	<p> _id : req.params.postId 로 _id에 postId저장. </p>
+	<p> _id로 찾은 post를 .remove 메소드로 삭제한다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman16.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman17.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman18.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
+
+	<h3>특정 post의  특정 항목 update</h3>
+	<pre>
+<code>router.patch('/:postId',async (req,res) =>{
+    try{
+        const updatePost = await Post.updateOne(
+            {_id: req.params.postId}, 
+            { $set: {title: req.body.title}}
+        );
+
+        res.json(updatePost);
+    }catch(err){
+        res.json({message:err});
+    }
+});</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman19.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>update할 post의 id를 확인후 </p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman20.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p>postman에서 patch 방식으로 posts/:postId 에 아래 json을 보내면 </p>
+	<pre>
+<code>{
+	"title": "We are learning about backend stuff"
+};</code>
+	</pre>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman21.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<p> postId와 보내온 json을 .updateOne()메소드로 특정 post의 특정 항목을 update 한다</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/postman22.png" alt="" /></span></div>			
+		</div>
+	</div>
+	<hr/>
 
 	<h3>Reference</h3>
 	<div class="row">
