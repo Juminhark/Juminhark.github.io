@@ -3,8 +3,28 @@ layout: page
 title: Node.js
 subtitle : 
 ---
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/nodejs-main.svg" alt="" /></span></div>
+		</div>
+	</div>
 
-	<h3>Node.js install</h3>
+	<h3>Node.js 소개</h3>
+	<p>NodeJS는 구글 Chrome V8 JavaScript Engine으로 빌드된 JavaScript 런타임 이다. 
+	이벤트 기반, 논 블로킹 I/O 모델을 사용해 가볍고 효율적이다.</p>
+	<hr/>
+
+	<h3>Node.js의 특징</h3>
+	<ul>
+		<li>비동기 I/O 처리 / 이벤트 위주 : Node.js 라이브러리의 모든 API는 비동기식입니다. (Non-blocking)</li>
+		<li>빠른 속도: 구글 크롬의 V8 자바스크립트 엔진을 사용하여 빠른 코드 실행을 제공</li>
+		<li>단일 쓰레드 / 뛰어난 확장성: Node.js는 이벤트 루프와 함께 단일 쓰레드 모델을 사용</li>
+		<li>노  버퍼링: Node.js 어플리케이션엔 데이터 버퍼링이 없고, 데이터를 chunk로 출력</li>
+		<li>라이센스: Node.js 는 MIT License가 적용되어있습니다.</li>
+	</ul>
+	<hr/>
+
+	<h3>Node.js 설치</h3>
 	<p><a href="https://nodejs.org/ko/">https://nodejs.org/ko</a> 에서 LTS 버젼 설치</p>
 	<div class="box alt">
 		<div class="row uniform 50%">
@@ -19,3 +39,26 @@ v12.2.0
 
 > npm -v
 6.9.0</code></pre>
+	<hr/>
+
+	<h3>Node Package Manager(NPM)</h3>
+	<p>Node.js에서 사용할 수 있는 모듈들을 패키지화하여 모아둔 저장소 역할과 패키지 설치 및 관리를 위한 CLI(Command line interface)를 제공한다. 자신이 작성한 패키지를 공개할 수도 있고 필요한 패키지를 검색하여 재사용할 수도 있다.</p>
+	<pre><code>> npm intall <package>
+
+> npm i <package></code></pre>
+	<p>install 명령어중 별도의 옵션을 지정하지않으면 지역(local)으로 설치되며, -g 옵션을 지정하면 전역(global)으로 설치된다.</p>
+	<pre><code>> npm i -g <package></code></pre>
+
+	<h3>package.json과 의존성 관리</h3>
+
+
+	<h3>Reference</h3>
+	<div class="row">
+		<div class="6u$ 12u$(medium)">
+			<ol>
+				<li><a href="https://velopert.com/210">velopert - nodejs</a></li>
+				<li><a href="https://poiemaweb.com/nodejs-npm">poiemaweb - nodejs</a></li>
+			</ol>
+		</div>
+	</div>
+	<hr />
