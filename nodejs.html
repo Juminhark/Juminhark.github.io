@@ -56,12 +56,12 @@ v12.2.0
 6.9.0</code></pre>
 	<hr/>
 
-	<h3>Node Package Manager(NPM)</h3>
+	<h3>NPM(Node Package Manager)</h3>
 	<p>Node.js에서 사용할 수 있는 모듈들을 패키지화하여 모아둔 저장소 역할과 패키지 설치 및 관리를 위한 CLI(Command line interface)를 제공한다.</p>
 	<p>자신이 작성한 패키지를 공개할 수도 있고 필요한 패키지를 검색하여 재사용할 수도 있다.</p>
 	<pre><code>> npm intall <-package>
 
-> npm i <package></code></pre>
+> npm i <-package></code></pre>
 	<p>install 명령어중 별도의 옵션을 지정하지않으면 지역(local)으로 설치되며, -g 옵션을 지정하면 전역(global)으로 설치된다.</p>
 	<pre><code>> npm i -g <-package></code></pre>
 	<hr/>
@@ -74,7 +74,13 @@ v12.2.0
 	<p>devDependencies에는 개발 시에만 사용하는 개발용 의존 패키지를 명시한다.<br/>
 	예를 들어 TypeScript와 같은 트랜스파일러는 개발 단계에서만 필요하고 배포할 필요는 없으므로 devDependencies에 포함시킨다.<br/>
 	npm install 명령어에 --save-dev(축약형 -D) 옵션을 사용하면 패키지 설치와 함께 package.json의 devDependencies에 설치된 패키지와 버전이 기록된다.</p>
-	<pre><code>> npm i -D <-package></code></pre>
+	<pre><code>> npm i -D <-package>
+	
+// package.json
+"devDependencies": {
+	"-package": "@version"
+}
+</code></pre>
 	<hr/>
 
 	<h3>자주 사용하는 npm 명령어</h3>
@@ -143,12 +149,83 @@ v12.2.0
 		</div>
 	</div>
 	<hr/>
+
+	<h3>callback function</h3>
+	<p>javascript에서 function은 일급 객체. 즉, 함수는 Object타입이며 다른 일급 객체(string, arrary, number 등)와 똑같이 사용될수 있다.<br/>
+	function 자체가 객체이므로 변수 안에 담을 수 도 있고, 인수로써 다른 함수에 전달 해 줄수도 있고, 함수에서 만들어 질수도 있고, 반환될수도 있다.</p>
+	<p>callback function은, 특정함수에 매개변수로써 전달된 함수를 지칭하고, 전달 받은 함수 안에서 호출된다.</p>
+	<p>jQuery에서 사용된 callback function 예제</p>
+	<pre><code>$("#btn_1").click(function() {
+	alert("Btn 1 Clicked");
+});
+// click 메소드에 이름이 없는 callback function을 인수로 전달
+// jQuery 안의 click 메소드에서는, 마우스 클릭이 있으면 callback function을 호출</code></pre>
+	<p>click 메소드의 인수가 함수. 이함수가 callback function.</p>
+	
+	<h5>callback function이 많이 사용되는 이유</h5>
+	<p>callback function이 사용되지않은, blocking code 예제</p>
+	<pre><code>// input.txt
+Let's understand what is a callback function.
+What the HELL is it?
+
+// main.js
+var fs = require("fs");
+
+var data = fs.readFileSync('input.txt');
+
+console.log(data.toString());
+console.log("Program has ended");
+
+// node main.js
+Let's understand what is a callback function.
+What the HELL is it?
+Program has ended</code></pre>
+
+	<p>Callback function이 사용된 Non-Blocking Code 예제</p>
+	<p>blocking code예제와 다르게 function이 실행될때 종료를 기다리지 않고 다음 코드를 실행하고 <br/>
+		function에 있던 작업이 끝나면 callback function을 호출한다.</p>
+	<pre><code>// main.js 수정
+var fs = require("fs");
+
+fs.readFile('input.txt', function (err, data) {
+	if (err) return console.error(err);
+	console.log(data.toString());
+});
+
+console.log("Program has ended");
+
+// node main.js
+Program has ended
+Let's understand what is a callback function.
+What the HELL is it?</code></pre>
+
+	<p>모든 node application의 비동기식 함수에서는 첫번째 매개변수로는 error를 마지막 매개변수로는 callback function을 받는다.</p>
+	<p>fs.readFile() 함수는 비동기식으로 파일을 읽는 함수이고, 도중에 error가 발생하면 err객체에 내용을 담고, 정상흐름이면 파일내용을 읽고 출력.<br/>
+	readFile() 메서드가 실행 된후, 프로그램이 메소드가 끝날때까지 대기하지않고, 곧바로 다음 명령어를 진행 하였기 때문에, "Program has ended"가 먼저 출력된다.</p>
+	<p>callback function을 사용하여 이렇게 프로그램의 흐름을 끊지 않음으로서,
+		Non-Blocking 코드를 사용하는 서버는 Blocking 코드를 사용하는 서버보다 더 많은 양의 요청을 빠르게 처리 할 수 있게된다.</p>
+	<hr/>
+	
+	<h3>Event Loop</h3>
+	<p><a href="https://www.youtube.com/watch?v=gP0J1WZZRr4&t=212s">event loop 기초강의</a><br/></p>
+	<h5>call stack</h5>
+	<h5>callback queue</h5>
+		
+
+
+
+
+
+
+	<hr/>
 	<h3>Reference</h3>
 	<div class="row">
 		<div class="6u$ 12u$(medium)">
 			<ol>
 				<li><a href="https://velopert.com/210">velopert - nodejs</a></li>
 				<li><a href="https://poiemaweb.com/nodejs-npm">poiemaweb - nodejs</a></li>
+				<li><a href="https://www.youtube.com/channel/UC1LzvduPSKr9puUr-WJo9AA">fast campus</a></li>
+				
 			</ol>
 		</div>
 	</div>
