@@ -205,32 +205,225 @@ What the HELL is it?</code></pre>
 	<p>callback function을 사용하여 이렇게 프로그램의 흐름을 끊지 않음으로서,
 		Non-Blocking 코드를 사용하는 서버는 Blocking 코드를 사용하는 서버보다 더 많은 양의 요청을 빠르게 처리 할 수 있게된다.</p>
 	<hr/>
-	
-	<h3>Event Loop</h3>
-	<p><a href="https://www.youtube.com/watch?v=gP0J1WZZRr4&t=212s">event loop 기초강의</a><br/></p>
-	
+
+	<h3>Javascript engine</h3>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/jsengine.png" alt="" /></span></div>
+		</div>
+	</div>
+
+	<h3>Event Loop와 비동기 동작</h3>
+	<p>event loop 강의 : <a href="https://www.youtube.com/watch?v=gP0J1WZZRr4&t=212s">https://www.youtube.com/watch?v=gP0J1WZZRr4&t=212s</a><br/></p>
+	<p>싱글 쓰레드로 작동하는 자바스크립트에서 비동기적인 프로그래밍을 위한 장치로 call stack queue을 주기적으로 감시(폴링)하고 있다가 비어있는것이 체크되면 callback queue의 최상단의 코드작업을 call stack queue으로 이동시킨다.</p>
+
 	<h5>call stack</h5>
-	<p>함수의 실행순서를 기록</p>
-	<p>javascript의 엔진인 </p>
+	<p>stack 구조를 통해 함수가 순차적으로 실행될때 순서처리를 기록. 함수가 시작되면 callstack에 해당 함수가 쌓이고(push), 함수가 종료되면 callstack에서 제거된다(pop). 만약 함수가 종료되기 전에 또 다른 함수가 실행되면, 해당함수는 종료되지 않은 기존 함수 스택위에 새로운 스택으로서 쌓이게 된다. </p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/callstack.png" alt="" /></span></div>
+		</div>
+	</div>
 
 	<h5>callback queue</h5>
-	<p></p>
-		
+	<p>비동기적으로 실행된 callback function들이 보관되는 영역이다. Promise는 Microtask Queue로, Timeout은 Task Queue로,
+		RequestAnimationFrame은 Animation Frame으로 콜백함수를 밀어넣는다. 이후 event loop의 callback 이동 우선순위는 크롬기준 Microtask Queue > Animation Frames > Task Queue 이다.</p>
+	<div class="box alt">
+		<div class="row uniform 50%">
+			<div class="12u"><span class="image fit"><img src="images/callbackqueue.png" alt="" /></span></div>
+		</div>
+	</div>
 
+	<h5>web apis</h5>
+	<p>node.js와 web browser의 차이. client에 반응 하는 event를 처리하는 코드가 web api queue에서 별도로 작업한다.</br> 
+		web apis는 web browser를 기반으로 하는 api이기 때문에 node.js의 api와 다르다.</p>		
 
-
-
-
-
+	<h5>queue 자료구조</h5>
+	<p>데이터순서가 처음부터 끝이 있다면 앞에 입력된 데이터를 먼저 출력하는 자료구조.</p>
 	<hr/>
+
+	<h3><code>var, let, const</code> 차이점.</h3>
+	<p>javascript의 변수 <code>var</code>의 문제점.</p>
+	<pre><code>// 이미 만들어진 변수이름으로 재선언했는데 아무런 문제가 발생하지 않는다.
+var a = 'test'
+var a = 'test2'
+
+// hoisting으로 인해 ReferenceError에러가 안난다.
+c = 'test'
+var c</code></pre>
+	
+	<p>위 같은 문제점으로 ES2015에서 추가된 <code>let, const</code>는 둘다 변수 재선언이 불가능하며 <code>let</code>은 변수에 재할당이 가능하지만, <code>const</code>는 변수 재할당이 불가능하다.</p>
+	<hr/>
+
+	<h3>node.js 모듈</h3>
+	<p>자바스크립트는 웹페이지에 있어서 보조적인 기능을 수행하기 위해 한정적인 용도로 만들어진 태생적 한계로 다른 언어에 비해 부족한(나쁜) 부분이 있는 것이 사실이다. 그 대표적인 것이 모듈 기능이 없는 것이다.</p>
+	<p>브라우저 상에서 동작하는 JavaScript는 script tag로 로드하며 복수의 JavaScript 파일을 로드할 경우 하나의 파일로 merge되며 동일한 유효범위를 갖게 된다.</p>
+	<blockquote>ES6에서는 Client-side JavaScript에서도 동작하는 모듈 기능을 추가하였다. 단 현재 대부분의 브라우저가 ES6의 모듈을 지원하지 않고 있으므로 ES6 모듈을 현재의 브라우저에서 사용하기 위해서는 SystemJS, RequireJS 등의 모듈 로더 또는 Webpack 등의 모듈번들러를 사용하여야 한다. ES6 모듈은 키워드 export, import를 제공한다.</blockquote>
+	<p>JavaScript를 Client-side에 국한하지 않고 범용적으로 사용하고자 하는 움직임이 생기면서 모듈 기능은 반드시 해결해야하는 핵심 과제가 되었고 이런 상황에서 제안된 것이 CommonJS와 AMD(Asynchronous Module Definition)이다.</p>
+	<p>Node.js는 사실상 모듈 시스템의 사실상 표준(de facto standard)인 CommonJS를 채택하였고 현재는 독자적인 진화를 거쳐 CommonJS 사양과 100% 동일하지는 않지만 기본적으로 CommonJS 방식을 따르고 있다.</p>
+	<p>Node.js는 module 단위로 각 기능을 분할할 수 있다. module은 파일과 1대1의 대응 관계를 가지며 하나의 모듈은 자신만의 독립적인 실행 영역(Scope)를 가지게 된다. 따라서 클라이언트 사이드 JavaScript와는 달리 전역변수의 중복 문제가 발생하지 않는다.</p>
+	<p>모듈은 module.exports 또는 exports 객체를 통해 정의하고 외부로 공개한다. 그리고 공개된 모듈은 require 함수를 사용하여 임포트한다.</p>
+	
+	<h5>exports</h5>
+	<p>모듈은 독립적인 파일 스코프를 갖기 때문에 모듈 안에 선언한 모든 것들은 기본적으로 해당 모듈 내부에서만 참조 가능하다. 만약 모듈 안에 선언한 항목을 외부에 공개하여 다른 모듈들이 사용할 수 있게 하고 싶다면 exports 객체를 사용해야 한다.</p>
+	<p>모듈을 파일로 작성하고 외부에 공개할 대상을 exports 객체의 프로퍼티 또는 메소드를 정의한다. 그리고 모듈을 전역 함수 require()를 이용하여 추출한다.</p>
+	<pre><code>// circle.js
+// circle 모듈안에서만 유효
+const { PI } = Math;
+
+exports.area = (r) => PI * r * r;
+
+exports.circumference = (r) => 2 * PI * r;</code></pre>
+	<p>circle.js는 독립적인 파일 스코프를 갖는 모듈이다. circle 모듈에서 area와 circumference를 exports 객체의 메소드로 정의하였다. 변수 PI는 circle 모듈에서만 유효한 private 변수가 되고, area와 circumference는 외부에 공개된다.</p>
+	<pre><code>// app.js
+const circle = require('./circle.js'); // == require('./circle')
+
+console.log(`지름이 4인 원의 면적: ${circle.area(4)}`);
+console.log(`지름이 4인 원의 둘레: ${circle.circumference(4)}`);</code></pre>
+	<p>require 함수를 사용하여 임의의 이름으로 circle 모듈을 import한다. 모듈의 확장자는 생략할 수 있다.</p>
+	<p>이때 circle 모듈은 객체로 반환된다. 따라서 circle.area, circle.circumference와 같은 형식으로 공개된 circle 모듈을 참조한다. app.js를 실행해 보자.</p>
+	<pre><code>> node app
+지름이 4인 원의 면적: 50.26548245743669
+지름이 4인 원의 둘레: 25.132741228718345</code></pre>
+
+	<h5>module.exorts</h5>
+	<p>exports 객체는 프로퍼티 또는 메소드를 여러개 정의할수 있었다. 하지만 module.exports에는 하나의 값(원시 타입, 함수, 객체)을 할당할 수 있다.</p>
+	<pre><code>// circle.js
+const { PI } = Math;
+
+module.exports = function (r) {
+	return {
+		area() { return PI * r * r; },
+		circumference() { return 2 * PI * r}
+	};
+}</code></pre>
+	<p>circle 모듈의 module.exports에는 하나의 함수를 할당하였다.</p>
+	<pre><code>// app.js
+const circle = require('./circle');
+const myCircle = circle(4);
+
+console.log(`지름이 4인 원의 면적: ${myCircle.area()}`);
+console.log(`지름이 4인 원의 둘레: ${myCircle.circumference()}`);</code></pre>
+	<p>require 함수를 통해 circle 모듈을 임포트하여 circle 변수에 할당하였다. 이때 circle 변수는 circle 모듈에서 module.exports에 할당한 값 자체 즉 객체를 반환하는 함수이다.</p>
+	
+	<pre><code>// primitive.js
+const pv = 'primitive value';
+module.exports = pv;</code></pre>
+
+	<p>함수 뿐만아니라 원시값도 할당할수 있다.</p>
+	<pre><code>// app.js
+const value = require('./primitive');
+console.log(value); // => 'primitive value'</code></pre>
+	<p>exports와 module.exports는 혼동하기 쉽다. exports는 module.exports에의 참조이며 module.exports의 alias이다. 즉, exports는 module.exports와 같다고 보아도 무방하다.</p>
+	<div class="table-wrapper">
+		<table class="alt">
+			<thead>
+				<tr>
+					<th>구분</th>
+					<th>모듈 정의 방식</th>
+					<th>require 함수의 호출결과</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>exports</td>
+					<td>exports 객체에는 값을 할당할 수 없고 공개할 대상을 exports 객체에 프로퍼티 또는 메소드로 추가한다.</td>
+					<td>exports 객체에 추가한 프로퍼티와 메소드가 담긴 객체가 전달된다.</td>
+				</tr>
+				<tr>
+					<td>module.exports</td>
+					<td>module.exports 객체에 하나의 값(원시 타입, 함수, 객체)만을 할당한다.</td>
+					<td>module.exports 객체에 할당한 값이 전달된다.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>module.exports에 함수를 할당하는 방식</h3>
+	<pre><code>// foo.js
+modele.exports = function(a, b) {
+	return a + b;
+}
+
+// app.js
+const add = require('./foo')
+
+const result = add(1, 2);
+console.log(result); // => 3</code></pre>
+	<p>module.exports는 1개의 값만을 할당할 수 있다. 모듈에서 1개의 값만을 공개하는 것은 불편할 수 있다.</p> 
+	<p>다음과 같이 객체를 사용하여 복수의 기능을 하나로 묶어 공개하는 방식을 사용할 수 있다.</p>
+	
+	<h3>exports에 객체를 할당하는 방식</h3>
+	<pre><code>// foo.js
+module.exports = {
+	add(v1, v2) { return v1 + v2 },
+	minus (v1, v2) { return v1 - v2 }
+};
+
+// app.js
+const calc = require('./foo')
+
+const result1 = calc.add(1, 2);
+console.log(result1); // => 3
+
+const result2 = calc.minus(1, 2);
+console.log(result2); // => -1</code></pre>
+	<h3>require</h3>
+	<pre><code>project/
+├── app.js
+└── module/
+	├── index.js
+	├── calc.js
+	└── print.js</code></pre>
+	<p>아래과 같이 모듈을 명시하지 않고 require 함수를 호출하면 해당 디렉터리의 index.js을 로드한다.</p>
+	<pre><code>const myModule = require('./module');</code></pre>
+	<p>이때 로드되는 index.js 내에서 calc.js과 print.js를 require하면 한번의 require로 alc.js과 print.js의 모든 기능을 사용할 수 있다.</p>
+	<pre><code>// module/index.js
+module.exports = {
+	calc: require('./calc'),
+	print: require('./print')
+};</code></pre>
+	<pre><code>// module/calc.js
+module.exports = {
+	add (v1, v2) { return v1 + v2 },
+	minus (v1, v2) { return v1 - v2 }
+};</code></pre>
+	<pre><code>// module/print.js
+module.exports = {
+	sayHello() { console.log('Hi!') }
+};</code></pre>
+	<pre><code>// app.js
+const myModule = require('./module');
+
+// module/calc.js의 기능
+const result = myModule.calc.add(1, 2);
+
+console.log(result);
+
+// module/print.js의 기능
+myModule.print.sayHello();</code></pre>
+
+	<h3>코어 모듈과 파일 모듈</h3>
+	<p>Node.js는 기본으로 포함하고 있는 모듈이 있다. 이를 코어 모듈이라 한다. 코어 모듈을 로딩할 때에는 패스를 명시하지 않아도 무방하다.</p>
+	<pre><code>const http = require('http');</code></pre>
+	<p>npm을 통해 설치한 외부 패키지 또한 패스를 명시하지 않아도 무방하다.</p>
+	<pre><code>const mongoose = require('mongoose');</code></pre>
+	<p>코어 모듈과 외부 패키지 이외는 모두 파일 모듈이다. 파일 모듈을 로딩할 때에는 패스를 명시하여야 한다.</p>
+	<pre><code>const foo = require('./lib/foo');</code></pre>
+	<hr/>
+
 	<h3>Reference</h3>
 	<div class="row">
 		<div class="6u$ 12u$(medium)">
 			<ol>
-				<li><a href="https://velopert.com/210">velopert - nodejs</a></li>
-				<li><a href="https://poiemaweb.com/nodejs-npm">poiemaweb - nodejs</a></li>
+				<li><a href="https://velopert.com/210">velopert.log</a></li>
+				<li><a href="https://poiemaweb.com/nodejs-npm">poiemaweb</a></li>
 				<li><a href="https://www.youtube.com/channel/UC1LzvduPSKr9puUr-WJo9AA">fast campus</a></li>
-				
+				<li><a href="https://velog.io/@wan088/JavaScript-EventLoop%EC%99%80-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%8F%99%EC%9E%91">wan088.log</a></li>
+				<li><a href="https://asfirstalways.tistory.com/362">Jbee</a></li>
+				<li><a href="https://velog.io/@thms200/Event-Loop-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A3%A8%ED%94%84">thms200.log</a></li>
+				<li><a href="https://gist.github.com/LeoHeo/7c2a2a6dbcf80becaaa1e61e90091e5d">LeoHeo/var-let-const.md</a></li>
+
 			</ol>
 		</div>
 	</div>
