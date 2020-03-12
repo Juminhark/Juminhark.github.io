@@ -4,14 +4,89 @@ title: React
 subtitle : 
 ---
 
-필요한 선수 지식
-javascript : https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript
-최신버젼인 es6의 몇가지 기능을 사용.
-화살표 함수, 클래스, let, const 등
+<h3>react란 무엇인가?</h3>
+<p>React는 사용자 인터페이스를 구축하기 위한 선언적이고 효율적이며 유연한 JavaScript 라이브러리입니다. 
+“컴포넌트”라고 불리는 작고 고립된 코드의 파편을 이용하여 복잡한 UI를 구성하도록 돕습니다.</p>
 
-react란 무엇인가?
-React는 사용자 인터페이스를 구축하기 위한 선언적이고 효율적이며 유연한 JavaScript 라이브러리입니다. 
-“컴포넌트”라고 불리는 작고 고립된 코드의 파편을 이용하여 복잡한 UI를 구성하도록 돕습니다.
+<a href="https://www.youtube.com/watch?v=BYbgopx44vo">https://www.youtube.com/watch?v=BYbgopx44vo</a>
+<hr/>
+
+<a href="https://codepen.io">codepen.io</a>
+<p>codepen을 이용하면 로컬 컴퓨터에 개발환경을 구축하지않아도 온라인으로에서 코드를 바로 실행해볼수있다.</p>
+<p>New Pen > setting > JS</p>
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/copensetting.png" alt="" /></span></div>
+  </div>
+</div>
+<p>JavaScript preprocessor에 2015년 update된 ES6(ECMAScript6)를 ES5로 변환하는 Babel을 추가하고 Add External JavaScript에 React와 React-DOM을 추가</p>
+<p>여러 브라우저에 대응하기 위해. chrome이나 firefox는 ES6를 지원하나 explore와 구버젼 브라우저들은 지원하지 않아 babel을 사용.</p>
+
+<p><a href="http://kangax.github.io/compat-table/es6/">http://kangax.github.io/compat-table/es6/</a>에서 각 런타임 환경에서 ES6를 얼마나 지원하는지 확인 가능</p> 
+<p>react 는 component를 대응하고, react-DOM은 실제 DOM에 render을 담당. 버젼 15 미만에서는 react만 불러오면 되었었다. </p>
+
+<h3>주요개념</h3>
+
+<h4>1. hello world</h4>
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/helloworld.png" alt="" /></span></div>
+  </div>
+</div>
+<p>js 부분부터 보면 <code>Codelab</code>,<code>App</code> 둘다 <code>React.Component</code>를 상속 받는 class(es6 추가)이고 return 안의 JSX를 <code>render()</code>한다.</p>
+<p>맨 아래 <code>ReactDOM</code>은 App을 render하여 id=root인 DOM에 추가하는데 이때 App안의 Codelab이 JSX를 render 함으로 최종적으로 id=root 인 div안에 Hello World가 추가되는것이다.</p>
+
+<h4>JSX</h4>
+<p>XML같은 형식을 native javascript로 변경해준다. babel에서 jsxloader를 사용하여 jsx를 변환</p>
+
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/nestedelement.png" alt="" /></span></div>
+  </div>
+</div>
+<h5>1. Nested Element</h5>
+<p>component에서 여러 element를 랜더링할떄 container element안에 포함</p>
+
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/expression.png" alt="" /></span></div>
+  </div>
+</div>
+<h5>2. JavaScript Expression</h5>
+<p>JSX안에 JavaScript를 표현하는 방식은 {}로 wrapping 하면된다.</p>
+<p><code>let</code>은 es6에 추가된 내용. var(전역, 함수 유효범위)와 다르게 변수가 사용되는 블록, 구문, 표현식 안의 유효범위를 갖는 변수. 재선언 불가능. </p>
+
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/expression2.png" alt="" /></span></div>
+  </div>
+</div>
+<p>컴파일이 끝나면, JSX 표현식이 정규 JavaScript 함수 호출이 되고 JavaScript 객체로 인식된다.
+  즉, JSX를 if 구문 및 for loop 안에 사용하고, 변수에 할당하고, 인자로서 받아들이고, 함수로부터 반환할 수 있다.</p>
+
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/inlinestyle.png" alt="" /></span></div>
+  </div>
+</div>
+<h5>3. Inline Style</h5>
+<p>JSX안에서 style을 설정할때는 String형식을 사용하지않고 key가 camelCase인 객체가 사용. class 를 설정할때는 className을 사용.</p>
+
+<div class="box alt">
+  <div class="row uniform 50%">
+    <div class="12u"><span class="image fit"><img src="images/react/object.png" alt="" /></span></div>
+  </div>
+</div>
+<h5>JSX는 객체를 표현.</h5>
+<p>Babel은 JSX를 React.createElement() 호출로 컴파일하고 객체를 생성. 이러한 객체를 “React 엘리먼트”라고 하며, 이를 화면에 표시하려는 항목에 대한 설명이라고 생각할 수 있습니다. React는 이러한 객체를 읽은 후 DOM을 구성하고 최신으로 유지하는 데 이러한 객체를 사용합니다.</p>
+
+<h3>엘리먼트 랜더링</h3>
+<p>앨리먼트는 React 앱의 가장 작은 단위. 브라우저 DOM 엘리먼트와 달리 React 엘리먼트는 일반 객체이며(plain object) 쉽게 생성할 수 있습니다. React DOM은 React 엘리먼트와 일치하도록 DOM을 업데이트합니다.</p>
+
+<p>더 널리 알려진 개념인 “컴포넌트”와 엘리먼트를 혼동할 수 있다. 엘리먼트는 컴포넌트의 “구성 요소”</p>
+
+
+
 
 
 
@@ -22,3 +97,5 @@ React는 사용자 인터페이스를 구축하기 위한 선언적이고 효율
 
 
 https://ko.reactjs.org/tutorial/tutorial.html#overview
+
+https://www.youtube.com/watch?v=5MF-ThMob-s&list=PL9FpF_z-xR_GMujql3S_XGV2SpdfDBkeC&index=5
